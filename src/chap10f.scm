@@ -25,7 +25,7 @@
 
 (define *libraries* " scheme.o schemelib.o " )
 
-(define *a.out* "chap10e")
+(define *a.out* "myprog")
 
 (define Cfile (string-append *a.out* ".c"))
 
@@ -85,13 +85,14 @@
                "cd " dir "; "
                *cc+cflags* " -I../../src/c "
                (string-append "../" Cfile)
-               *libraries* "-o " *a.out* ))
+               *libraries* ))
+         (_ignored (display cmd))
          (status (system cmd)) )
     (unless (= status 0)
       (evaluate-error "C compilation aborted.") )
     (set! status
-          (system (string-append "cd " dir "; ./"
-                                 *a.out* " > ../ttlog " )) )
+          (system (string-append "cd " dir "; node a.out.js"
+                                 " > ../ttlog " )) )
     (system (string-append
              "sed -e 's:#<:<:g' -e 's:@::g' < " ttlog " > " log) )
     (unless (= status 0)

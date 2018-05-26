@@ -43,7 +43,8 @@
  * You can test that very easily with a little C program.
  */
 
-#define SCM_STACK_HIGHER <=
+/* This used to be <=, I changed it for wasm! */
+#define SCM_STACK_HIGHER >=
  
 /* No other (known) machine dependences.
  */

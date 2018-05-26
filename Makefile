@@ -51,7 +51,7 @@ export HOSTTYPE := $(shell uname -m)
 # other support code, and is quite a bit faster at executing the
 # included test suite than any other interpreter.  -- appleby
 
-MYSCHEME = bigloo
+MYSCHEME = guile
 # MYSCHEME = gsi
 # MYSCHEME = guile
 # MYSCHEME = mit
@@ -93,7 +93,7 @@ CAMLLIGHT = camllight
 # have installed. Note that it's not enough to specify CC=gcc48 on the make
 # command line. The `export' clause here will override it. -- appleby
 
-export CC=gcc
+export CC=emcc
 export CFLAGS=-ansi -pedantic -Wall -O
 
 # This is perl. I use it for checking results of tests. It is not
@@ -1192,6 +1192,21 @@ test.chap10e : o/${HOSTTYPE}/schemelib.o
 	    '(load "src/chap10f.scm")' \
 	    '(and (test-scheme10e "src/chap10e.tst")' \
 	    '     (test-scheme10e "src/scheme.tst"))' \
+	| ${SCHEME}
+
+test.myprog : src/chap10a.scm src/chap10c.scm
+test.myprog : src/chap10g.scm src/chap10e.scm
+test.myprog : src/chap10h.scm src/chap10f.scm
+test.myprog : o/${HOSTTYPE}/scheme.o
+test.myprog : o/${HOSTTYPE}/schemelib.o
+	echo \
+	    '(load "src/chap10a.scm")' \
+	    '(load "src/chap10c.scm")' \
+	    '(load "src/chap10g.scm")' \
+	    '(load "src/chap10e.scm")' \
+	    '(load "src/chap10h.scm")' \
+	    '(load "src/chap10f.scm")' \
+	    '(and (test-scheme10e "src/myprog.tst"))' \
 	| ${SCHEME}
 
 # chap10m.scm contains the letify function that recursively copies
